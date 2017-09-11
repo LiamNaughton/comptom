@@ -1,5 +1,5 @@
 
-GAP=gap4
+GAP=gap
 
 gapdoc:
 	@echo 'RequirePackage("gapdoc");; MakeGAPDocDoc( "./", "comptom", ["../gap/subgroups.gd","../gap/solvabletom.gd", "../gap/impressions.gd" ], "comptom" );;' | $(GAP) -q -T
