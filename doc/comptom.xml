@@ -1,0 +1,177 @@
+<?xml version="1.1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE Book SYSTEM "gapdoc.dtd" [<!ENTITY ATLAS "<Package>COMPTOM</Package>">]>
+
+<Book Name="tomlib">                                        <!-- REQUIRED -->
+	
+	<!--
+	    The title page
+	    -->
+	<TitlePage>    
+		<!-- REQUIRED -->
+		<Title>                                             
+			<Package>The GAP package CompTom</Package>
+		</Title>
+		
+		<Subtitle>     	                                     <!-- OPTIONAL -->
+			<Br/>
+			
+			&nbsp;
+		</Subtitle>
+		
+		<Version>Version 1.1.0</Version> 
+		<!-- OPTIONAL -->
+		<Author> 
+			Liam Naughton<Br/>                 <!-- REQUIRED -->
+			&nbsp;
+			<Address>
+				School of Mathematics &amp; Computer Science<Br/>
+				University of Wolverhampton,<Br/>
+				Wolverhampton,<Br/>
+				United Kingdom.
+			</Address>
+			<Email> liamjamesnaughton@gmail.com</Email> 
+			<Homepage>http://www.scit.wlv.ac.uk/~in5296</Homepage>
+		</Author> 
+		
+		<Date>August 2017</Date> 
+		<!-- OPTIONAL -->
+		
+		<Copyright> 
+			<!-- OPTIONAL -->
+			&copyright; 2017 Liam Naughton
+		</Copyright> 
+		
+		<Acknowledgements> 
+			<!-- OPTIONAL -->
+			<P/>
+			
+			
+			<P/>This documentation was prepared with the <Package>GAPDoc</Package> package 
+			by Frank Luebeck and Max Neunhoffer. This work was supported by Science Foundation Ireland under the Research Frontiers program,
+		</Acknowledgements>
+		
+	</TitlePage>
+	
+	
+	
+	<TableOfContents/>                                    <!-- OPTIONAL -->
+	
+	
+	
+	<!--
+	    The document
+	    -->
+	<Body>                                                <!-- REQUIRED -->
+		
+		
+  <Chapter>
+	  <Heading>The CompTom Package</Heading>
+	    <Section><Heading>Introduction</Heading>
+	   The notion of the table of marks of a finite group <M>G</M> was introduced by William Burnside in the second edition of his famous book, Theory of 
+Groups of Finite Order, <Cite Key="Bur55"/>, and it is often referred to as the Burnside matrix of <M>G</M>. The table of marks of <M>G</M> is a square matrix whose rows and 
+columns are indexed by the conjugacy classes of subgroups of <M>G</M> and where for any two conjugacy classes of subgroups <M>H</M> and <M>K</M>, the 
+<M>(H, K)</M>-entry is the number of fixed points of <M>K</M> in the transitive action of <M>G</M> on the cosets of <M>H</M> in <M>G</M>. In this way the table of marks of 
+<M>G</M> characterizes the set of all permutation representations of <M>G</M> up to equivalence. At the same time the table of marks of <M>G</M> describes the 
+partially order set of all conjugacy classes of subgroups of <M>G</M> since from the number of fixed points the number of conjugates of <M>K</M> contained in 
+<M>H</M> can be derived.
+	  
+	  </Section>
+<Section><Heading>Computing Tables of Marks</Heading>
+Traditionally the computation of the table of marks of a finite group <M>G</M> requires complete knowledge of the entire subgroup lattice of <M>G</M>. 
+The marks are then derived by counting inclusions between conjugacy classes of subgroup. This works fine when the order of <M>G</M> is small but is 
+impractical when the order of <M>G</M> is large. Pfeiffer <Cite Key="Pfe97"/> has developed a method for computing the table of marks of <M>G</M> from the 
+tables of marks of the maximal subgroups of <M>G</M>. This method has been successfully 
+used to compute the tables of marks of a variety of groups including, <M>M_{24}, Mcl, S_{12}</M> and <M>A_{13}</M>. However since this 
+approach relies on the knowledge of the tables of marks of all maximal subgroups of <M>G</M>, the range of simple and almost simple groups to which it can be applied 
+has almost been exhausted.
+
+With this in mnd the authors have developed a collection of algorithms to compute the table of marks of a cyclic extension <M>G.p</M> from the table of marks of <M>G</M>. 
+Many groups whose tables of marks have not been computed fall into this category. The functions contained in this package are based on the algorithms described in 
+<Cite Key="Nau2011"/>.  
+
+</Section>
+	  
+		
+	
+		
+		
+	
+
+	<Section><Heading>Installing and Loading the CompTom Package</Heading>
+  
+		  Download the archives in your preferred format. Unpack the archives inside the pkg dirctory of your GAP installation.
+		 Load the package
+		<Log>
+gap&gt; LoadPackage("COMPTOM");
+true</Log>
+	  </Section>
+<Section>
+<Heading>Computing Subgroups</Heading>
+Let <M>A</M> be a normal subgroup of <M>S</M> of index <M>p</M> a prime. 
+
+<#Include Label="SubExtensionsSubgroups">
+<Log>
+gap&gt; A := AlternatingGroup(4);S := SymmetricGroup(4);
+Alt( [ 1 .. 5 ] )
+Sym( [ 1 .. 4 ] )
+gap&gt; subs := List(ConjugacyClassesSubgroups(A), Representative);
+[ Group(()), Group([ (1,2)(3,4) ]), Group([ (2,4,3) ]), 
+  Group([ (1,3)(2,4), (1,2)(3,4) ]), 
+  Group([ (1,3)(2,4), (1,4)(2,3), (2,4,3) ]) ]
+gap&gt; SubExtensionsSubgroups(S, A, subs);
+[ Group(()), Group([ (1,2)(3,4) ]), Group([ (2,4,3) ]), 
+  Group([ (1,3)(2,4), (1,2)(3,4) ]), 
+  Group([ (1,3)(2,4), (1,4)(2,3), (2,4,3) ]), Group([ (1,2) ]), 
+  Group([ (1,2)(3,4), (3,4) ]), Group([ (1,2)(3,4), (1,4,2,3) ]), 
+  Group([ (2,4,3), (3,4) ]), Group([ (1,3)(2,4), (1,2)(3,4), (3,4) ]), 
+  Group([ (2,4,3), (1,4)(2,3), (1,2)(3,4), (3,4) ]) ]
+</Log>
+<#Include Label="AllSubgroupClassesSolvable">
+<Log>
+gap&gt; G := SymmetricGroup(4);
+Sym( [ 1 .. 4 ] )
+gap&gt; AllSubgroupClassesSolvable(G);
+[ Group(()), Group([ (1,2)(3,4) ]), Group([ (1,2)(3,4), (1,4)(2,3) ]), 
+  Group([ (1,2,3) ]), Group([ (1,2)(3,4), (1,4)(2,3), (2,3,4) ]), 
+  Group([ (1,2) ]), Group([ (1,2)(3,4), (3,4) ]), 
+  Group([ (1,2)(3,4), (1,3,2,4) ]), Group([ (1,2)(3,4), (1,4)(2,3), (3,4) ]), 
+  Group([ (1,2,3), (2,3) ]), 
+  Group([ (1,4)(2,3), (1,3)(2,4), (2,3,4), (3,4) ]) ]
+</Log>
+</Section>
+<Section>
+<Heading>Computing Tables of Marks</Heading>
+<#Include Label="TomExtensionTom">
+<Log>
+gap&gt;  A := AlternatingGroup(4); S := SymmetricGroup(4);
+Alt( [ 1 .. 5 ] )
+Sym( [ 1 .. 4 ] )
+gap&gt; tom := TableOfMarks(A); maxcoma := 1000;
+TableOfMarks( Alt( [ 1 .. 4 ] ) )
+1000
+gap&gt; TomExtensionTom(S, A, tom, maxcoma);
+ TableOfMarks( "S4" )
+</Log>
+<#Include Label="TomSolvableTom">
+<Log>
+gap&gt; G := SymmetricGroup(4);
+Sym( [ 1 .. 4 ] )
+gap&gt; TomSolvableTom(G, 1000);
+ TableOfMarks( "S4" )
+</Log>
+</Section>
+
+ </Chapter>
+ 
+  
+  
+</Body>
+
+<Bibliography Databases="bib.xml"/>
+<TheIndex/>  
+</Book>
+
+
+
+	  
